@@ -10,11 +10,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum BankAccountTypeEnum {
+  checking
+  investment
+  cash
+
+  @@map("bank_account_type_enum")
+}
+
 model User {
   id    String @id @default(uuid()) @db.Uuid
   name  String
   email String @unique
   phone String
 
+  bankAccounts BankAccount[]
+
   @@map("users")
+}
+
+model BankAccount {
+  id             String              @id @default(uuid()) @db.Uuid
+  userId         String              @map("user_id") @db.Uuid
+  name           String
+  initialBalance Float               @map("initial_balance")
+  type           BankAccountTypeEnum
+  color          String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("bank_accounts")
 }
