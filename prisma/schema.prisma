@@ -18,6 +18,13 @@ enum BankAccountTypeEnum {
   @@map("bank_account_type_enum")
 }
 
+enum CategoryTransactionTypeEnum {
+  income
+  expense
+
+  @@map("category_transaction_type_enum")
+}
+
 model User {
   id    String @id @default(uuid()) @db.Uuid
   name  String
@@ -25,6 +32,7 @@ model User {
   phone String
 
   bankAccounts BankAccount[]
+  category     Category[]
 
   @@map("users")
 }
@@ -40,4 +48,16 @@ model BankAccount {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("bank_accounts")
+}
+
+model Category {
+  id     String                      @id @default(uuid()) @db.Uuid
+  userId String                      @map("user_id") @db.Uuid
+  name   String
+  icon   String
+  type   CategoryTransactionTypeEnum
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("categories")
 }
