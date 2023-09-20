@@ -32,7 +32,8 @@ model User {
   phone String
 
   bankAccounts BankAccount[]
-  category     Category[]
+  categories   Category[]
+  transaction  Transaction[]
 
   @@map("users")
 }
@@ -45,7 +46,8 @@ model BankAccount {
   type           BankAccountTypeEnum
   color          String
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transaction Transaction[]
 
   @@map("bank_accounts")
 }
@@ -57,7 +59,25 @@ model Category {
   icon   String
   type   CategoryTransactionTypeEnum
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transaction Transaction[]
 
   @@map("categories")
+}
+
+model Transaction {
+  id            String                      @id @default(uuid()) @db.Uuid
+  categoryId    String?                     @map("category_id") @db.Uuid
+  bankAccountId String                      @map("bank_account_id") @db.Uuid
+  userId        String                      @map("user_id") @db.Uuid
+  name          String
+  value         Float
+  date          DateTime
+  type          CategoryTransactionTypeEnum
+
+  bankAccount BankAccount @relation(fields: [bankAccountId], references: [id])
+  category    Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
 }
