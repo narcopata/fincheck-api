@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { PrismaService } from '../database/prisma.service';
+import { PrismaService } from 'src/shared/database/prisma.service';
 import { argon2id, hash } from 'argon2';
 import { Category, User } from '@prisma/client';
 
