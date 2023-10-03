@@ -1,12 +1,1 @@
-{
-  "editor.fontFamily": "'Iosevka Mayukai Sonata', Iosevka SS07",
-  "editor.cursorBlinking": "expand",
-  "editor.cursorSmoothCaretAnimation": "on",
-  "editor.cursorStyle": "line-thin",
-  "editor.fontLigatures": true,
-  "terminal.integrated.cursorStyle": "line",
-  "terminal.integrated.cursorBlinking": true,
-  "editor.linkedEditing": true,
-  "editor.fontSize": 16,
-  "fonted.font": "SF UI Display Light",
-}
+{}
