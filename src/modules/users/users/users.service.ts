@@ -1,15 +1,15 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { PrismaService } from 'src/shared/database/prisma.service';
 import { argon2id, hash } from 'argon2';
 import { Category, User } from '@prisma/client';
+import { UsersRepository } from 'src/shared/database/repositories/users.repositories';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: UsersRepository) {}
 
   public async create(createUserDto: CreateUserDto) {
-    const userWithEmailFromDb = await this.prismaService.user.findUnique({
+    const userWithEmailFromDb = await this.prismaService.findUnique({
       where: {
         email: createUserDto.email,
       },
@@ -26,7 +26,7 @@ export class UsersService {
       hashLength: 40,
     });
 
-    const user = await this.prismaService.user.create({
+    const user = await this.prismaService.create({
       data: {
         ...createUserDto,
         password: hashedPassword,
