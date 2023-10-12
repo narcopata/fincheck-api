@@ -11,6 +11,7 @@ import { env } from 'src/shared/config/env';
   imports: [
     DatabaseModule,
     JwtModule.register({
+      global: true,
       secret: env.jwtSecret,
       signOptions: { expiresIn: env.jwtSignExpiresIn },
     }),
