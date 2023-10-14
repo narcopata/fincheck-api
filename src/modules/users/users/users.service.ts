@@ -3,5 +3,17 @@ import { UsersRepository } from 'src/shared/database/repositories/users.reposito
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prismaService: UsersRepository) {}
+  constructor(private readonly usersRepository: UsersRepository) {}
+
+  public async getUserById(userId: string) {
+    return this.usersRepository.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        name: true,
+        email: true,
+      },
+    });
+  }
 }
