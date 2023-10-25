@@ -4,9 +4,10 @@ import { UsersModule } from './modules/users/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { APP_GUARD } from '@nestjs/core';
+import { BankAccountsModule } from './modules/bank-accounts/bank-accounts.module';
 
 @Module({
-  imports: [UsersModule, CategoriesModule, AuthModule],
+  imports: [UsersModule, CategoriesModule, AuthModule, BankAccountsModule],
   controllers: [],
   providers: [
     {
