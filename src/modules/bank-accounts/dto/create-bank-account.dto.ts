@@ -5,7 +5,7 @@ import {
   IsNumber,
   IsString,
 } from 'class-validator';
-import { BankAccountType, BankAccountTypes } from '../entities/BankAccount';
+import { BankAccountType, BANK_ACCOUNT_TYPES } from '../entities/BankAccount';
 
 export class CreateBankAccountDto {
   @IsString()
@@ -17,7 +17,7 @@ export class CreateBankAccountDto {
   initialBalance: number;
 
   @IsNotEmpty()
-  @IsIn(Object.values(BankAccountTypes))
+  @IsIn(Object.values(BANK_ACCOUNT_TYPES))
   type: BankAccountType;
 
   @IsString()

@@ -7,4 +7,4 @@ const BANK_ACCOUNT_TYPES = {
 type BankAccountType =
   (typeof BANK_ACCOUNT_TYPES)[keyof typeof BANK_ACCOUNT_TYPES];
 
-export { BANK_ACCOUNT_TYPES as BankAccountTypes, BankAccountType };
+export { BANK_ACCOUNT_TYPES, BankAccountType };
