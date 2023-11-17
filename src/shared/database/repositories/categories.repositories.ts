@@ -21,4 +21,8 @@ export class CategoriesRepository implements ICategoriesRepository {
   > {
     return this.categoriesRepository.findMany(args);
   }
+
+  findOne(findOneDto: Prisma.CategoryFindUniqueArgs) {
+    return this.categoriesRepository.findUnique(findOneDto);
+  }
 }
