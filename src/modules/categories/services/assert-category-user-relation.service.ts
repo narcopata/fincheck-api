@@ -6,13 +6,10 @@ export class AssertCategoryUserRelationService {
   constructor(private readonly categoriesRepository: CategoriesRepository) {}
 
   public async assert(id: string, userId: string) {
-    const category = await this.categoriesRepository.findOne({
+    const category = await this.categoriesRepository.findFirst({
       where: {
         id,
         userId,
-      },
-      select: {
-        userId: true,
       },
     });
 
