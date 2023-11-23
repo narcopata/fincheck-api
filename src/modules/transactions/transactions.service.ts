@@ -5,6 +5,7 @@ import { AssertTransactionUserRelationService } from './services/assert-transact
 import { AssertCategoryUserRelationService } from '../categories/services/assert-category-user-relation.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { TransactionType } from './entities/Transaction';
 
 @Injectable()
 export class TransactionsService {
@@ -34,8 +35,31 @@ export class TransactionsService {
     ]);
   }
 
-  public async findAllByUserId() {
-    return this.transactionsRepository.findMany({});
+  public async findAllByUserId(data: {
+    userId: string;
+    filters: {
+      month: number;
+      year: number;
+      bankAccountId?: string;
+      type?: TransactionType;
+    };
+  }) {
+    const {
+      userId,
+      filters: { month, year, bankAccountId, type },
+    } = data;
+
+    return this.transactionsRepository.findMany({
+      where: {
+        userId,
+        date: {
+          gte: new Date(Date.UTC(year, month)),
+          lt: new Date(Date.UTC(year, month + 1)),
+        },
+        bankAccountId,
+        type,
+      },
+    });
   }
 
   public async create(
@@ -44,6 +68,12 @@ export class TransactionsService {
   ) {
     const { categoryId, bankAccountId, date, name, type, value } =
       createTransactionDto;
+
+    await this.assertRelations({
+      userId,
+      bankAccountId,
+      categoryId,
+    });
 
     const transaction = await this.transactionsRepository.create({
       data: {
@@ -87,7 +117,7 @@ export class TransactionsService {
   }
 
   public async remove(id: string) {
-    this.transactionsRepository.delete({
+    await this.transactionsRepository.delete({
       where: {
         id,
       },
