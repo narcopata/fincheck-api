@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -48,7 +50,11 @@ export class TransactionsController {
   }
 
   @Delete(':id')
-  public remove(id: string) {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public remove(
+    @Param('id')
+    id: string,
+  ) {
     return this.transactionsService.remove(id);
   }
 }
