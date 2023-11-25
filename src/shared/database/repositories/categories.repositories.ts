@@ -21,4 +21,8 @@ export class CategoriesRepository implements ICategoriesRepository {
   > {
     return this.categoriesRepository.findMany(args);
   }
+
+  findFirst(findFirstDto: Prisma.CategoryFindFirstArgs) {
+    return this.categoriesRepository.findFirst(findFirstDto);
+  }
 }
