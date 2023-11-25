@@ -3,6 +3,7 @@ import { CreateBankAccountDto } from '../dto/create-bank-account.dto';
 import { UpdateBankAccountDto } from '../dto/update-bank-account.dto';
 import { BankAccountsRepository } from '../../../shared/database/repositories/bank-accounts.repositories';
 import { AssertBankAccountUserRelationService } from './assert-bank-account-user-relation.service';
+import { TRANSACTION_TYPES } from 'src/modules/transactions/entities/Transaction';
 
 @Injectable()
 export class BankAccountsService {
@@ -29,10 +30,36 @@ export class BankAccountsService {
   }
 
   public async findAllByUserId(userId: string) {
-    return this.bankAccountsRepository.findMany({
+    const bankAccounts = await this.bankAccountsRepository.findMany({
       where: {
         userId,
       },
+      include: {
+        transaction: {
+          select: {
+            type: true,
+            value: true,
+          },
+        },
+      },
+    });
+
+    return bankAccounts.map(({ transaction, ...bankAccount }) => {
+      const totalInTransactions = transaction.reduce((acc, transaction) => {
+        return (
+          acc +
+          (transaction.type === TRANSACTION_TYPES.INCOME
+            ? transaction.value
+            : -transaction.value)
+        );
+      }, 0);
+
+      const currentBalance = bankAccount.initialBalance + totalInTransactions;
+
+      return {
+        ...bankAccount,
+        currentBalance,
+      };
     });
   }
 

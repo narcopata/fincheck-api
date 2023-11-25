@@ -2,16 +2,28 @@ import { type Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
 import { Injectable } from '@nestjs/common';
 import { UpdateBankAccountDto } from 'src/modules/bank-accounts/dto/update-bank-account.dto';
+import { DefaultArgs, GetFindResult } from '@prisma/client/runtime/library';
+
+type BankAccountsReporitoryType = Pick<
+  PrismaService['bankAccount'],
+  'findMany'
+>;
 
 @Injectable()
-export class BankAccountsRepository {
+export class BankAccountsRepository implements BankAccountsReporitoryType {
   private readonly bankAccountsRepositories: PrismaService['bankAccount'];
 
   constructor(private readonly prismaService: PrismaService) {
     this.bankAccountsRepositories = this.prismaService.bankAccount;
   }
-
-  public async findMany(findAllDto: Prisma.BankAccountFindManyArgs) {
+  public findMany<T extends Prisma.BankAccountFindManyArgs<DefaultArgs>>(
+    findAllDto?: Prisma.SelectSubset<
+      T,
+      Prisma.BankAccountFindManyArgs<DefaultArgs>
+    >,
+  ): Prisma.PrismaPromise<
+    GetFindResult<Prisma.$BankAccountPayload<DefaultArgs>, T>[]
+  > {
     return this.bankAccountsRepositories.findMany(findAllDto);
   }
 
