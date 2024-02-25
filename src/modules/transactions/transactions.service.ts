@@ -59,6 +59,11 @@ export class TransactionsService {
         bankAccountId,
         type,
       },
+      include: {
+        id: true,
+        name: true,
+        icon: true
+      }
     });
   }
 
