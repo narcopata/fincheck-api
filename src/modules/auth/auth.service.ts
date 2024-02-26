@@ -41,10 +41,10 @@ export class AuthService {
 
     console.log(argon2id);
 
-    const isPasswordValid = await verify(user.password, password, {
+    const isPasswordValid = await verify(user.password, password, ({
       type: argon2id,
       hashLength: 40,
-    });
+    } as unknown as { secret: any }));
 
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials.');
