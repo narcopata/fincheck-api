@@ -60,9 +60,13 @@ export class TransactionsService {
         type,
       },
       include: {
-        id: true,
-        name: true,
-        icon: true
+        category: {
+          select: {
+            id: true,
+            name: true,
+            icon: true,
+          }
+        }
       }
     });
   }
